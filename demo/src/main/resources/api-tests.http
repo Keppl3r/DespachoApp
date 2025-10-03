@@ -1,0 +1,11 @@
+### 1. Crear un nuevo cliente
+POST http://localhost:8080/api/clientes
+Content-Type: application/json
+
+{
+  "nombreCompleto": "Juan Pérez",
+  "telefono": "5512345678",
+  "email": "juan.perez@correo.com",
+  "direccion": "Calle Falsa 123, Colonia Centro"
+
+}
