@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001"}) // <-- CORRECCIÓN
 @RestController
 @RequestMapping("/api/clientes")
 public class ClienteController {
@@ -17,11 +17,6 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
-    /**
-     * Endpoint para OBTENER todos los clientes, con capacidad de búsqueda por nombre.
-     * GET http://localhost:8080/api/clientes
-     * GET http://localhost:8080/api/clientes?nombre=perez
-     */
     @GetMapping
     public List<Cliente> obtenerTodosLosClientes(@RequestParam(required = false) String nombre) {
         return clienteService.obtenerTodosLosClientes(nombre);

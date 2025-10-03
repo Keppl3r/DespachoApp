@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import GestionClientes from './components/GestionClientes';
 import GestionExpedientes from './components/GestionExpedientes';
 import GestionAgenda from './components/GestionAgenda';
@@ -10,13 +11,32 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <header className="App-header">
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            success: {
+              style: {
+                background: '#28a745',
+                color: 'white',
+              },
+            },
+            error: {
+              style: {
+                background: '#dc3545',
+                color: 'white',
+              },
+            },
+          }}
+        />
+        <header>
           <h1>DespachoApp</h1>
           <nav>
-            <Link to="/">Dashboard</Link>
-            <Link to="/clientes">Clientes</Link>
-            <Link to="/expedientes">Expedientes</Link>
-            <Link to="/agenda">Agenda</Link>
+            <ul>
+              <li><Link to="/">Dashboard</Link></li>
+              <li><Link to="/clientes">Clientes</Link></li>
+              <li><Link to="/expedientes">Expedientes</Link></li>
+              <li><Link to="/agenda">Agenda</Link></li>
+            </ul>
           </nav>
         </header>
 

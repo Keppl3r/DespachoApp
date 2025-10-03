@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../App.css';
+import toast from 'react-hot-toast';
+import {
+    Card,
+    Title,
+    Input,
+    Button,
+    Table,
+    ActionsContainer
+} from '../styles/StyledComponents';
 
 const API_URL = 'http://localhost:8080/api/clientes';
 
@@ -26,44 +34,63 @@ function GestionClientes() {
             setClientes(respuesta.data);
         } catch (error) {
             console.error("Error al obtener clientes:", error);
-            alert('Error al cargar los clientes.');
+            toast.error('Error al cargar los clientes.');
         }
     };
 
     const crearCliente = async (cliente) => {
         try {
             await axios.post(API_URL, cliente);
-            alert('Cliente creado con éxito');
+            toast.success('Cliente creado con éxito');
             setSearchTerm('');
             if (!searchTerm) obtenerClientes();
         } catch (error) {
             console.error("Error al crear cliente:", error);
-            alert('Error al crear el cliente.');
+            toast.error('Error al crear el cliente.');
         }
     };
 
     const actualizarCliente = async (id, cliente) => {
         try {
             await axios.put(`${API_URL}/${id}`, cliente);
-            alert('Cliente actualizado con éxito');
+            toast.success('Cliente actualizado con éxito');
             setSearchTerm('');
             if (!searchTerm) obtenerClientes();
         } catch (error) {
             console.error("Error al actualizar cliente:", error);
-            alert('Error al actualizar el cliente.');
+            toast.error('Error al actualizar el cliente.');
         }
     };
 
+    const handleEliminar = (id) => {
+        toast((t) => (
+            <span>
+                ¿Estás seguro?
+                <Button
+                    onClick={() => {
+                        toast.dismiss(t.id);
+                        eliminarCliente(id);
+                    }}
+                    danger
+                    style={{ marginLeft: '10px' }}
+                >
+                    Eliminar
+                </Button>
+                <Button onClick={() => toast.dismiss(t.id)} secondary>
+                    Cancelar
+                </Button>
+            </span>
+        ), { icon: '🤔' });
+    };
+
     const eliminarCliente = async (id) => {
-        if (window.confirm("¿Estás seguro de que quieres eliminar este cliente?")) {
-            try {
-                await axios.delete(`${API_URL}/${id}`);
-                alert('Cliente eliminado');
-                obtenerClientes(searchTerm);
-            } catch (error) {
-                console.error("Error al eliminar cliente:", error);
-                alert('Error al eliminar el cliente.');
-            }
+        try {
+            await axios.delete(`${API_URL}/${id}`);
+            toast.success('Cliente eliminado');
+            obtenerClientes(searchTerm);
+        } catch (error) {
+            console.error("Error al eliminar cliente:", error);
+            toast.error('Error al eliminar el cliente.');
         }
     };
 
@@ -95,32 +122,33 @@ function GestionClientes() {
     };
 
     return (
-        <>
-            <div className="form-container">
-                <h2>{modoEdicion ? 'Editar Cliente' : 'Añadir Nuevo Cliente'}</h2>
+        <main>
+            <Card>
+                <Title>{modoEdicion ? 'Editar Cliente' : 'Añadir Nuevo Cliente'}</Title>
                 <form onSubmit={handleSubmit}>
-                    <input type="text" name="nombreCompleto" placeholder="Nombre Completo" value={formData.nombreCompleto} onChange={handleInputChange} required />
-                    <input type="text" name="telefono" placeholder="Teléfono" value={formData.telefono} onChange={handleInputChange} />
-                    <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleInputChange} required />
-                    <input type="text" name="direccion" placeholder="Dirección" value={formData.direccion} onChange={handleInputChange} />
+                    <Input type="text" name="nombreCompleto" placeholder="Nombre Completo" value={formData.nombreCompleto} onChange={handleInputChange} required />
+                    <Input type="text" name="telefono" placeholder="Teléfono" value={formData.telefono} onChange={handleInputChange} />
+                    <Input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleInputChange} required />
+                    <Input type="text" name="direccion" placeholder="Dirección" value={formData.direccion} onChange={handleInputChange} />
                     <div>
-                        <button type="submit">{modoEdicion ? 'Actualizar' : 'Guardar'}</button>
-                        {modoEdicion && <button type="button" onClick={resetForm} className="secondary">Cancelar</button>}
+                        <Button type="submit">{modoEdicion ? 'Actualizar' : 'Guardar'}</Button>
+                        {modoEdicion && <Button type="button" onClick={resetForm} secondary>Cancelar</Button>}
                     </div>
                 </form>
-            </div>
+            </Card>
 
-            <div className="list-container">
-                <h2>Lista de Clientes</h2>
+            <Card>
+                <Title>Lista de Clientes</Title>
                 <div>
-                    <input
+                    <Input
                         type="text"
                         placeholder="Buscar cliente por nombre..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
+                        style={{ marginBottom: '20px' }}
                     />
                 </div>
-                <table>
+                <Table>
                     <thead>
                         <tr>
                             <th>Nombre</th>
@@ -137,16 +165,16 @@ function GestionClientes() {
                                 <td>{cliente.telefono}</td>
                                 <td>{cliente.email}</td>
                                 <td>{cliente.direccion}</td>
-                                <td>
-                                    <button onClick={() => handleEditar(cliente)} className="secondary">Editar</button>
-                                    <button onClick={() => eliminarCliente(cliente.id)} className="danger">Eliminar</button>
-                                </td>
+                                <ActionsContainer>
+                                    <Button onClick={() => handleEditar(cliente)} secondary>Editar</Button>
+                                    <Button onClick={() => handleEliminar(cliente.id)} danger>Eliminar</Button>
+                                </ActionsContainer>
                             </tr>
                         ))}
                     </tbody>
-                </table>
-            </div>
-        </>
+                </Table>
+            </Card>
+        </main>
     );
 }
 

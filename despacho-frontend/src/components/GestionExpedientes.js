@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../App.css';
+import toast from 'react-hot-toast';
+import {
+    Card,
+    Title,
+    Input,
+    Select,
+    Button,
+    Table,
+    ActionsContainer,
+    FilterContainer
+} from '../styles/StyledComponents';
 
 const EXPEDIENTES_API_URL = 'http://localhost:8080/api/expedientes';
 const CLIENTES_API_URL = 'http://localhost:8080/api/clientes';
@@ -42,7 +52,7 @@ function GestionExpedientes() {
             setClientes(res.data);
         } catch (error) {
             console.error("Error al obtener clientes:", error);
-            alert('Error al cargar los clientes.');
+            toast.error('Error al cargar los clientes.');
         }
     };
 
@@ -54,45 +64,64 @@ function GestionExpedientes() {
             setExpedientes(res.data);
         } catch (error) {
             console.error(`Error al obtener expedientes para el cliente ${clienteId}:`, error);
+            toast.error('Error al cargar los expedientes.');
             setExpedientes([]);
-            alert('Error al cargar los expedientes.');
         }
     };
 
     const crearExpediente = async (expediente) => {
         try {
             await axios.post(EXPEDIENTES_API_URL, expediente);
-            alert('Expediente creado con éxito');
+            toast.success('Expediente creado con éxito');
             setSearchTerm('');
             if (!searchTerm) obtenerExpedientesPorCliente(clienteFiltro.id);
         } catch (error) {
             console.error("Error al crear expediente:", error);
-            alert('Error al crear el expediente.');
+            toast.error('Error al crear el expediente.');
         }
     };
 
     const actualizarExpediente = async (id, expediente) => {
         try {
             await axios.put(`${EXPEDIENTES_API_URL}/${id}`, expediente);
-            alert('Expediente actualizado con éxito');
+            toast.success('Expediente actualizado con éxito');
             setSearchTerm('');
             if (!searchTerm) obtenerExpedientesPorCliente(clienteFiltro.id);
         } catch (error) {
             console.error("Error al actualizar expediente:", error);
-            alert('Error al actualizar el expediente.');
+            toast.error('Error al actualizar el expediente.');
         }
     };
 
+    const handleEliminar = (id) => {
+        toast((t) => (
+            <span>
+                ¿Estás seguro?
+                <Button
+                    onClick={() => {
+                        toast.dismiss(t.id);
+                        eliminarExpediente(id);
+                    }}
+                    danger
+                    style={{ marginLeft: '10px' }}
+                >
+                    Eliminar
+                </Button>
+                <Button onClick={() => toast.dismiss(t.id)} secondary>
+                    Cancelar
+                </Button>
+            </span>
+        ), { icon: '🤔' });
+    };
+
     const eliminarExpediente = async (id) => {
-        if (window.confirm("¿Estás seguro de que quieres eliminar este expediente?")) {
-            try {
-                await axios.delete(`${EXPEDIENTES_API_URL}/${id}`);
-                alert('Expediente eliminado');
-                obtenerExpedientesPorCliente(clienteFiltro.id, searchTerm);
-            } catch (error) {
-                console.error("Error al eliminar expediente:", error);
-                alert('Error al eliminar el expediente.');
-            }
+        try {
+            await axios.delete(`${EXPEDIENTES_API_URL}/${id}`);
+            toast.success('Expediente eliminado');
+            obtenerExpedientesPorCliente(clienteFiltro.id, searchTerm);
+        } catch (error) {
+            console.error("Error al eliminar expediente:", error);
+            toast.error('Error al eliminar el expediente.');
         }
     };
 
@@ -131,43 +160,44 @@ function GestionExpedientes() {
     };
 
     return (
-        <>
-            <div className="filter-container">
-                <h2>Seleccionar Cliente</h2>
-                <select onChange={handleFiltroClienteChange} defaultValue="">
+        <main>
+            <FilterContainer>
+                <Title>Seleccionar Cliente</Title>
+                <Select onChange={handleFiltroClienteChange} defaultValue="">
                     <option value="" disabled>-- Elige un cliente para ver sus expedientes --</option>
                     {clientes.map(cliente => (
                         <option key={cliente.id} value={cliente.id}>{cliente.nombreCompleto}</option>
                     ))}
-                </select>
-            </div>
+                </Select>
+            </FilterContainer>
 
             {clienteFiltro && (
                 <>
-                    <div className="form-container">
-                        <h2>{modoEdicion ? 'Editar Expediente' : `Añadir Expediente a ${clienteFiltro.nombreCompleto}`}</h2>
+                    <Card>
+                        <Title>{modoEdicion ? 'Editar Expediente' : `Añadir Expediente a ${clienteFiltro.nombreCompleto}`}</Title>
                         <form onSubmit={handleSubmit}>
-                            <input type="text" name="numeroExpediente" placeholder="Número de Expediente" value={formData.numeroExpediente} onChange={handleInputChange} required />
-                            <input type="text" name="juzgado" placeholder="Juzgado" value={formData.juzgado} onChange={handleInputChange} />
-                            <input type="text" name="materia" placeholder="Materia" value={formData.materia} onChange={handleInputChange} />
+                            <Input type="text" name="numeroExpediente" placeholder="Número de Expediente" value={formData.numeroExpediente} onChange={handleInputChange} required />
+                            <Input type="text" name="juzgado" placeholder="Juzgado" value={formData.juzgado} onChange={handleInputChange} />
+                            <Input type="text" name="materia" placeholder="Materia" value={formData.materia} onChange={handleInputChange} />
                             <div>
-                                <button type="submit">{modoEdicion ? 'Actualizar' : 'Guardar'}</button>
-                                {modoEdicion && <button type="button" onClick={resetForm} className="secondary">Cancelar</button>}
+                                <Button type="submit">{modoEdicion ? 'Actualizar' : 'Guardar'}</Button>
+                                {modoEdicion && <Button type="button" onClick={resetForm} secondary>Cancelar</Button>}
                             </div>
                         </form>
-                    </div>
+                    </Card>
 
-                    <div className="list-container">
-                        <h2>Lista de Expedientes</h2>
+                    <Card>
+                        <Title>Lista de Expedientes</Title>
                         <div>
-                            <input
+                            <Input
                                 type="text"
                                 placeholder="Buscar por número de expediente..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
+                                style={{ marginBottom: '20px' }}
                             />
                         </div>
-                        <table>
+                        <Table>
                             <thead>
                                 <tr>
                                     <th>Número</th>
@@ -182,18 +212,18 @@ function GestionExpedientes() {
                                         <td>{exp.numeroExpediente}</td>
                                         <td>{exp.juzgado}</td>
                                         <td>{exp.materia}</td>
-                                        <td>
-                                            <button onClick={() => handleEditar(exp)} className="secondary">Editar</button>
-                                            <button onClick={() => eliminarExpediente(exp.id)} className="danger">Eliminar</button>
-                                        </td>
+                                        <ActionsContainer>
+                                            <Button onClick={() => handleEditar(exp)} secondary>Editar</Button>
+                                            <Button onClick={() => handleEliminar(exp.id)} danger>Eliminar</Button>
+                                        </ActionsContainer>
                                     </tr>
                                 ))}
                             </tbody>
-                        </table>
-                    </div>
+                        </Table>
+                    </Card>
                 </>
             )}
-        </>
+        </main>
     );
 }
 
