@@ -2,7 +2,7 @@ services:
   - type: web
     name: despachoapp-backend
     env: docker
-    dockerfilePath: ./Dockerfile
+    dockerfilePath: ./demo/Dockerfile
     region: oregon
     plan: free
     healthCheckPath: /actuator/health
