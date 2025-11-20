@@ -6,9 +6,15 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f1f5f9;
-  /* Slate 100 */
-  color: #1e293b;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  font-size: 1.2rem;
+  /* Increased base font size */
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
 }
 
 /* Contenedor principal de la aplicación */
@@ -16,20 +22,23 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  text-align: center;
 }
 
 /* Cabecera */
 .App header {
-  background-color: #ffffff;
-  padding: 0 40px;
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  padding: 30px 40px;
+  /* Increased padding */
   height: 70px;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: sticky;
   top: 0;
   z-index: 100;
+  color: white;
 }
 
 .App header h1 {
@@ -45,6 +54,17 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
+.App h1 {
+  margin: 0 0 25px 0;
+  /* Increased margin */
+  font-size: 3.5rem;
+  /* Much larger title */
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.05em;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
 /* Navegación */
 .App nav {
   display: flex;
@@ -56,26 +76,39 @@ body {
   margin: 0;
   padding: 0;
   align-items: center;
+  justify-content: center;
+  gap: 25px;
+  /* Increased gap */
+  flex-wrap: wrap;
+}
+
+.App nav li {
+  display: inline;
 }
 
 .App nav a {
   text-decoration: none;
-  color: #64748b;
-  /* Slate 500 */
+  color: #e0e7ff;
   font-weight: 600;
-  padding: 12px 20px;
-  /* Larger touch target */
-  border-radius: 10px;
+  padding: 16px 28px;
+  /* Much larger touch target */
+  border-radius: 12px;
   transition: all 0.2s ease;
   margin-left: 8px;
-  font-size: 1.1rem;
-  /* Larger font */
+  font-size: 1.4rem;
+  /* Much larger navigation text */
+  border: 2px solid transparent;
 }
 
 .App nav a:hover {
-  background-color: #f1f5f9;
-  color: #2563eb;
-  /* Primary Blue */
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.App nav a:active {
+  transform: translateY(0);
 }
 
 .logout-link {

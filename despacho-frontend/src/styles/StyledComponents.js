@@ -95,122 +95,67 @@ export const Card = styled.div`
     box-shadow: ${theme.shadow};
     padding: 40px;
     width: 100%;
-    max-width: 450px; /* Slightly wider for better breathing room */
-    margin: 0 auto;
-    animation: ${fadeIn} 0.4s ease-out;
-    border: 1px solid ${theme.border};
+    padding: 40px; /* Much more padding */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    animation: ${fadeIn} 0.5s ease-out;
+    border: 2px solid ${theme.border};
+    max-width: 600px; /* Wider cards */
+    margin: 0 auto 30px;
 `;
 
 export const Title = styled.h2`
     color: ${theme.text};
-    font-family: ${theme.fontFamily};
-    font-size: 1.8rem;
+    margin-bottom: 30px; /* More space */
+    font-size: 2.5rem; /* Much larger */
     font-weight: 700;
-    margin-top: 0;
-    margin-bottom: 24px;
     text-align: center;
-    letter-spacing: -0.025em;
-    
-    /* Decorative underline */
-    position: relative;
-    padding-bottom: 16px;
-    &::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 60px;
-        height: 4px;
-        background: ${theme.primary};
-        border-radius: 2px;
-    }
 `;
 
 export const Table = styled.table`
     width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    margin-top: 24px;
-    background: ${theme.surface};
-    border-radius: ${theme.borderRadius};
+    border-collapse: collapse;
+    margin-top: 25px;
+    background: white;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: ${theme.shadow};
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 
     th, td {
-        padding: 16px 20px;
+        padding: 20px 16px; /* Much more padding */
         text-align: left;
-        border-bottom: 1px solid ${theme.border};
+        font-size: 1.3rem; /* Larger text */
+        border-bottom: 2px solid ${theme.border}; /* Thicker borders */
     }
 
     th {
-        background-color: #f1f5f9;
-        color: ${theme.text};
-        font-weight: 600;
+        background: linear-gradient(135deg, ${theme.primary} 0%, ${theme.primaryDark} 100%);
+        color: white;
+        font-weight: 700;
+        font-size: 1.4rem; /* Even larger headers */
         text-transform: uppercase;
-        font-size: 0.75rem;
         letter-spacing: 0.05em;
+    }
+
+    tr:hover {
+        background: rgba(37, 99, 235, 0.05);
     }
 
     tr:last-child td {
         border-bottom: none;
     }
-
-    tbody tr {
-        transition: background-color 0.15s ease;
-    }
-
-    tbody tr:hover {
-        background-color: #f8fafc;
-    }
-`;
-
-export const ActionsContainer = styled.td`
-    display: flex;
-    gap: 8px;
-`;
-
-export const FilterContainer = styled.div`
-    background-color: ${theme.surface};
-    padding: 24px;
-    border-radius: ${theme.borderRadius};
-    margin-bottom: 24px;
-    box-shadow: ${theme.shadow};
-    border: 1px solid ${theme.border};
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    align-items: flex-end;
-`;
-
-export const DateFilterWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-
-    label {
-        font-size: 0.875rem;
-        font-weight: 600;
-        color: ${theme.textLight};
-    }
-    
-    input {
-        margin-bottom: 0; /* Override default margin */
-    }
 `;
 
 export const PageContainer = styled.div`
-    padding: 40px 20px;
-    max-width: 1200px;
+    max-width: 1400px; /* Wider */
     margin: 0 auto;
+    padding: 40px 30px; /* More padding */
 `;
 
-export const AuthContainer = styled.main`
+export const AuthContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 85vh;
-    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-    padding: 20px;
+    min-height: 80vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 40px 20px;
 `;
-
