@@ -1,12 +1,14 @@
 /* Reset básico y color de fondo */
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f4f7f9; /* Un gris muy claro para el fondo */
+  background-color: #f1f5f9;
+  /* Slate 100 */
+  color: #1e293b;
 }
 
 /* Contenedor principal de la aplicación */
@@ -19,18 +21,28 @@ body {
 /* Cabecera */
 .App header {
   background-color: #ffffff;
-  padding: 15px 30px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 0 40px;
+  height: 70px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: sticky;
+  top: 0;
   z-index: 100;
 }
 
 .App header h1 {
   margin: 0;
-  font-size: 1.8rem;
-  color: #343a40;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0f172a;
+  /* Slate 900 */
+  letter-spacing: -0.05em;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* Navegación */
@@ -38,26 +50,47 @@ body {
   display: flex;
 }
 
+.App nav ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
 .App nav a {
   text-decoration: none;
-  color: #007bff;
+  color: #64748b;
+  /* Slate 500 */
   font-weight: 600;
-  padding: 8px 12px;
-  border-radius: 5px;
-  transition: background-color 0.2s, color 0.2s;
-  margin-left: 10px;
+  padding: 12px 20px;
+  /* Larger touch target */
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  margin-left: 8px;
+  font-size: 1.1rem;
+  /* Larger font */
 }
 
 .App nav a:hover {
-  background-color: #e9ecef;
+  background-color: #f1f5f9;
+  color: #2563eb;
+  /* Primary Blue */
+}
+
+.logout-link {
+  color: #ef4444 !important;
+  /* Red for logout */
+}
+
+.logout-link:hover {
+  background-color: #fef2f2 !important;
+  color: #dc2626 !important;
 }
 
 /* Contenido principal de las páginas */
 main {
-  padding: 30px;
   flex-grow: 1;
-  max-width: 1200px; /* Limita el ancho máximo para mejor legibilidad en pantallas grandes */
   width: 100%;
-  margin: 0 auto; /* Centra el contenido */
   box-sizing: border-box;
 }

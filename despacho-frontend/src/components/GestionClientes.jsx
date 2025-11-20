@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import authHeader from '../services/auth-header'; // 1. Importamos el authHeader
 import {
     Card,
     Title,
@@ -30,17 +31,19 @@ function GestionClientes() {
         try {
             const params = new URLSearchParams();
             if (nombre) params.append('nombre', nombre);
-            const respuesta = await axios.get(`${API_URL}?${params.toString()}`);
+            // 2. Añadimos la cabecera de autorización a la petición GET
+            const respuesta = await axios.get(`${API_URL}?${params.toString()}`, { headers: authHeader() });
             setClientes(respuesta.data);
         } catch (error) {
             console.error("Error al obtener clientes:", error);
-            toast.error('Error al cargar los clientes.');
+            toast.error('No se pudieron cargar los clientes. ¿Has iniciado sesión?');
         }
     };
 
     const crearCliente = async (cliente) => {
         try {
-            await axios.post(API_URL, cliente);
+            // 3. Añadimos la cabecera a la petición POST
+            await axios.post(API_URL, cliente, { headers: authHeader() });
             toast.success('Cliente creado con éxito');
             setSearchTerm('');
             if (!searchTerm) obtenerClientes();
@@ -52,7 +55,8 @@ function GestionClientes() {
 
     const actualizarCliente = async (id, cliente) => {
         try {
-            await axios.put(`${API_URL}/${id}`, cliente);
+            // 4. Añadimos la cabecera a la petición PUT
+            await axios.put(`${API_URL}/${id}`, cliente, { headers: authHeader() });
             toast.success('Cliente actualizado con éxito');
             setSearchTerm('');
             if (!searchTerm) obtenerClientes();
@@ -85,7 +89,8 @@ function GestionClientes() {
 
     const eliminarCliente = async (id) => {
         try {
-            await axios.delete(`${API_URL}/${id}`);
+            // 5. Añadimos la cabecera a la petición DELETE
+            await axios.delete(`${API_URL}/${id}`, { headers: authHeader() });
             toast.success('Cliente eliminado');
             obtenerClientes(searchTerm);
         } catch (error) {

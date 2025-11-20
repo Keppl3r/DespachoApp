@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
+// La configuración de CORS ahora es global, por lo que esta anotación ya no es necesaria aquí.
 @RestController
 @RequestMapping("/api/expedientes")
 public class ExpedienteController {
@@ -19,16 +19,9 @@ public class ExpedienteController {
 
     @GetMapping
     public List<Expediente> obtenerTodosLosExpedientes() {
-        // Este método ahora podría considerarse obsoleto o para un rol de admin.
-        // La búsqueda principal se hace por cliente.
         return expedienteService.obtenerTodosLosExpedientes();
     }
 
-    /**
-     * Endpoint para OBTENER los expedientes de un cliente, con capacidad de búsqueda por número.
-     * GET http://localhost:8080/api/expedientes/por-cliente/{clienteId}
-     * GET http://localhost:8080/api/expedientes/por-cliente/{clienteId}?numero=123
-     */
     @GetMapping("/por-cliente/{clienteId}")
     public List<Expediente> obtenerExpedientesPorCliente(@PathVariable int clienteId, @RequestParam(required = false) String numero) {
         return expedienteService.obtenerExpedientesPorClienteId(clienteId, numero);

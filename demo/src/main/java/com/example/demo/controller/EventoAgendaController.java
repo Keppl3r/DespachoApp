@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = "http://localhost:3000")
+// La configuración de CORS ahora es global, por lo que esta anotación ya no es necesaria aquí.
 @RestController
 @RequestMapping("/api/eventos")
 public class EventoAgendaController {
@@ -22,11 +22,6 @@ public class EventoAgendaController {
     @Autowired
     private EventoAgendaService eventoAgendaService;
 
-    /**
-     * NUEVO Endpoint para el DASHBOARD.
-     * Obtiene los eventos para los próximos 'X' días.
-     * GET http://localhost:8080/api/eventos/proximos?dias=7
-     */
     @GetMapping("/proximos")
     public List<EventoAgenda> obtenerEventosProximos(@RequestParam(defaultValue = "7") int dias) {
         return eventoAgendaService.obtenerEventosProximos(dias);

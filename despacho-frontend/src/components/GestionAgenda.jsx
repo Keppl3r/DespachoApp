@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useLocation } from 'react-router-dom';
+import authHeader from '../services/auth-header'; // 1. Importamos el authHeader
 import {
     Card,
     Title,
@@ -66,9 +67,10 @@ function GestionAgenda() {
         }
     }, [expedienteFiltro, fechaInicioFiltro, fechaFinFiltro]);
 
+    // 2. Añadimos la cabecera de autorización a TODAS las peticiones
     const obtenerClientes = async () => {
         try {
-            const res = await axios.get(CLIENTES_API_URL);
+            const res = await axios.get(CLIENTES_API_URL, { headers: authHeader() });
             setClientes(res.data);
         } catch (error) { 
             console.error("Error al obtener clientes:", error);
@@ -78,7 +80,7 @@ function GestionAgenda() {
 
     const obtenerTiposDeEvento = async () => {
         try {
-            const res = await axios.get(`${EVENTOS_API_URL}/tipos`);
+            const res = await axios.get(`${EVENTOS_API_URL}/tipos`, { headers: authHeader() });
             setTiposDeEvento(res.data);
         } catch (error) { 
             console.error("Error al obtener tipos de evento:", error);
@@ -88,7 +90,7 @@ function GestionAgenda() {
 
     const obtenerExpedientesPorCliente = async (clienteId) => {
         try {
-            const res = await axios.get(`${EXPEDIENTES_API_URL}/por-cliente/${clienteId}`);
+            const res = await axios.get(`${EXPEDIENTES_API_URL}/por-cliente/${clienteId}`, { headers: authHeader() });
             setExpedientes(res.data);
         } catch (error) { 
             console.error("Error al obtener expedientes:", error);
@@ -101,7 +103,7 @@ function GestionAgenda() {
             const params = new URLSearchParams();
             if (fechaInicio) params.append('fechaInicio', fechaInicio);
             if (fechaFin) params.append('fechaFin', fechaFin);
-            const res = await axios.get(`${EVENTOS_API_URL}/por-expediente/${expedienteId}?${params.toString()}`);
+            const res = await axios.get(`${EVENTOS_API_URL}/por-expediente/${expedienteId}?${params.toString()}`, { headers: authHeader() });
             setEventos(res.data);
         } catch (error) { 
             console.error("Error al obtener eventos:", error);
@@ -117,7 +119,7 @@ function GestionAgenda() {
 
     const crearEvento = async (evento) => {
         try {
-            await axios.post(EVENTOS_API_URL, evento);
+            await axios.post(EVENTOS_API_URL, evento, { headers: authHeader() });
             toast.success('Evento creado con éxito');
             refrescarEventos();
         } catch (error) { 
@@ -128,7 +130,7 @@ function GestionAgenda() {
 
     const actualizarEvento = async (id, evento) => {
         try {
-            await axios.put(`${EVENTOS_API_URL}/${id}`, evento);
+            await axios.put(`${EVENTOS_API_URL}/${id}`, evento, { headers: authHeader() });
             toast.success('Evento actualizado con éxito');
             refrescarEventos();
         } catch (error) { 
@@ -160,7 +162,7 @@ function GestionAgenda() {
 
     const eliminarEvento = async (id) => {
         try {
-            await axios.delete(`${EVENTOS_API_URL}/${id}`);
+            await axios.delete(`${EVENTOS_API_URL}/${id}`, { headers: authHeader() });
             toast.success('Evento eliminado');
             refrescarEventos();
         } catch (error) { 

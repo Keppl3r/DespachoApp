@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import authHeader from '../services/auth-header'; // 1. Importamos el authHeader
 import {
     Card,
     Title,
@@ -48,7 +49,8 @@ function GestionExpedientes() {
 
     const obtenerClientes = async () => {
         try {
-            const res = await axios.get(CLIENTES_API_URL);
+            // 2. Añadimos la cabecera de autorización
+            const res = await axios.get(CLIENTES_API_URL, { headers: authHeader() });
             setClientes(res.data);
         } catch (error) {
             console.error("Error al obtener clientes:", error);
@@ -60,7 +62,8 @@ function GestionExpedientes() {
         try {
             const params = new URLSearchParams();
             if (numero) params.append('numero', numero);
-            const res = await axios.get(`${EXPEDIENTES_API_URL}/por-cliente/${clienteId}?${params.toString()}`);
+            // 3. Añadimos la cabecera de autorización
+            const res = await axios.get(`${EXPEDIENTES_API_URL}/por-cliente/${clienteId}?${params.toString()}`, { headers: authHeader() });
             setExpedientes(res.data);
         } catch (error) {
             console.error(`Error al obtener expedientes para el cliente ${clienteId}:`, error);
@@ -71,7 +74,8 @@ function GestionExpedientes() {
 
     const crearExpediente = async (expediente) => {
         try {
-            await axios.post(EXPEDIENTES_API_URL, expediente);
+            // 4. Añadimos la cabecera de autorización
+            await axios.post(EXPEDIENTES_API_URL, expediente, { headers: authHeader() });
             toast.success('Expediente creado con éxito');
             setSearchTerm('');
             if (!searchTerm) obtenerExpedientesPorCliente(clienteFiltro.id);
@@ -83,7 +87,8 @@ function GestionExpedientes() {
 
     const actualizarExpediente = async (id, expediente) => {
         try {
-            await axios.put(`${EXPEDIENTES_API_URL}/${id}`, expediente);
+            // 5. Añadimos la cabecera de autorización
+            await axios.put(`${EXPEDIENTES_API_URL}/${id}`, expediente, { headers: authHeader() });
             toast.success('Expediente actualizado con éxito');
             setSearchTerm('');
             if (!searchTerm) obtenerExpedientesPorCliente(clienteFiltro.id);
@@ -116,7 +121,8 @@ function GestionExpedientes() {
 
     const eliminarExpediente = async (id) => {
         try {
-            await axios.delete(`${EXPEDIENTES_API_URL}/${id}`);
+            // 6. Añadimos la cabecera de autorización
+            await axios.delete(`${EXPEDIENTES_API_URL}/${id}`, { headers: authHeader() });
             toast.success('Expediente eliminado');
             obtenerExpedientesPorCliente(clienteFiltro.id, searchTerm);
         } catch (error) {

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001"}) // <-- CORRECCIÓN
+// La configuración de CORS ahora es global, por lo que esta anotación ya no es necesaria aquí.
 @RestController
 @RequestMapping("/api/clientes")
 public class ClienteController {
