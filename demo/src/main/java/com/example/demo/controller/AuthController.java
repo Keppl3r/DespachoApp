@@ -49,7 +49,7 @@ public class AuthController {
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
             logger.info("¡Autenticación exitosa! Procediendo...");
-            
+
             // --- INICIO DE LA DEPURACIÓN ---
             Object principal = authentication.getPrincipal();
             logger.info("Clase del objeto Principal: {}", principal.getClass().getName());
@@ -84,7 +84,8 @@ public class AuthController {
         logger.info("Email recibido: {}", signUpRequest.getEmail());
 
         boolean usernameExists = usuarioRepository.existsByUsername(signUpRequest.getUsername());
-        logger.info("Comprobando si el usuario '{}' existe... Resultado: {}", signUpRequest.getUsername(), usernameExists);
+        logger.info("Comprobando si el usuario '{}' existe... Resultado: {}", signUpRequest.getUsername(),
+                usernameExists);
 
         if (usernameExists) {
             logger.warn("Registro fallido: El nombre de usuario ya está en uso.");
@@ -116,6 +117,7 @@ public class AuthController {
 
         return ResponseEntity.ok(new MessageResponse("¡Usuario registrado con éxito!"));
     }
+
     @Autowired
     com.example.demo.security.GoogleAuthService googleAuthService;
 
@@ -123,7 +125,8 @@ public class AuthController {
     public ResponseEntity<?> googleLogin(@RequestBody java.util.Map<String, String> payload) {
         String token = payload.get("token");
         try {
-            com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload googlePayload = googleAuthService.verifyToken(token);
+            com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload googlePayload = googleAuthService
+                    .verifyToken(token);
             String email = googlePayload.getEmail();
             String name = (String) googlePayload.get("name");
 
@@ -149,6 +152,7 @@ public class AuthController {
                     userDetails.getEmail()));
 
         } catch (Exception e) {
+            logger.error("Error en Google Login: ", e);
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Invalid Google Token"));
         }
     }

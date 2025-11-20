@@ -23,6 +23,8 @@ services:
         generateValue: true
       - key: JWT_EXPIRATION_MS
         value: 86400000
+      - key: GOOGLE_CLIENT_ID
+        value: 1003522218119-mbm24fjvqbk0oc1g2halq5h0lbkptlk7.apps.googleusercontent.com
 
 databases:
   - name: despachoapp-db
